@@ -4,7 +4,7 @@
 **Contribution Number:** [1]  
 **Student:** [June Eguilos]  
 **Issue:** [[GitHub issue link](https://github.com/Wynntils/Wynntils/issues/3860)]  
-**Status:** [Phase I] [In Progress]
+**Status:** [Phase I] [Complete]
 
 ---
 
@@ -30,6 +30,7 @@ Allow clicking locked slots in the feeder menu.
 ### Current Behavior
 
 [What actually happens?]
+When an item is locked, you just aren't able to interact with specific progression items, when that shouldn't be the case. 
 
 ### Affected Components
 
