@@ -4,7 +4,7 @@
 **Contribution Number:** [1]  
 **Student:** [June Eguilos]  
 **Issue:** [[GitHub issue link](https://github.com/Wynntils/Wynntils/issues/3860)]  
-**Status:** [Phase I] [Complete]
+**Status:** [Phase II] [Complete]
 
 ---
 
@@ -37,16 +37,6 @@ When an item is locked, you just aren't able to interact with specific progressi
 ### Affected Components
 `[Which parts of the codebase are involved?]`
 `ItemLockFeature.java`
-  
-## Reproduction Process
-
-### Environment Setup
-
-  
-
-`[Notes on setting up your local development environment - challenges you faced, how you solved them]`
-
-  
 
 #### Setting up to reproduce Bug
 
@@ -66,7 +56,8 @@ When an item is locked, you just aren't able to interact with specific progressi
 2. Download Java
 3. Fork git
 4. Clone git in own VSCode
-  
+
+No challenges at all.   
 
 ### Steps to Reproduce
 
@@ -93,8 +84,8 @@ When an item is locked, you just aren't able to interact with specific progressi
 N/A, this is a gameplay bug to reproduce. 
 
 - **Screenshots/logs:** [If applicable]
-![[Screenshot 2026-06-16 at 1.23.35 PM.png]]
-![[Screenshot 2026-06-16 at 1.23.53 PM.png]]
+![](Evidence1.png)
+![](Evidence2.png)
 
 
 - **My findings:** [What you discovered during reproduction]
@@ -103,6 +94,8 @@ You are unable to place your item into the feeder because it is Item Locked.
 ---
 
 ## Solution Approach
+
+
 
 ### Analysis
 
