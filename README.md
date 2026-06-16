@@ -44,10 +44,24 @@ When an item is locked, you just aren't able to interact with specific progressi
 
 [Notes on setting up your local development environment - challenges you faced, how you solved them]
 
+#### Setting up to reproduce Bug
+1. Download Prism Launcher
+2. Log into Prism Launcher
+3. Modify Minecraft version to be 21.0.0
+4. Download Modpack Wyntill
+
+#### Setting up environment
+1. Download Wynntils 
+
+
 ### Steps to Reproduce
 
 1. [Step 1]
+
+
 2. [Step 2]
+
+
 3. [Observed result]
 
 ### Reproduction Evidence
