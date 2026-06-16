@@ -28,48 +28,78 @@ Seems like a small bug, when an item is locked, they just want to allow clicking
 Allow clicking locked slots in the feeder menu. 
 
 ### Current Behavior
+`[What actually happens?]`
 
-[What actually happens?]
-When an item is locked, you just aren't able to interact with specific progression items, when that shouldn't be the case. 
+When an item is locked, you just aren't able to interact with specific progression items, when that shouldn't be the case.
+
+  
 
 ### Affected Components
-
-[Which parts of the codebase are involved?]
-
----
-
+`[Which parts of the codebase are involved?]`
+`ItemLockFeature.java`
+  
 ## Reproduction Process
 
 ### Environment Setup
 
-[Notes on setting up your local development environment - challenges you faced, how you solved them]
+  
+
+`[Notes on setting up your local development environment - challenges you faced, how you solved them]`
+
+  
 
 #### Setting up to reproduce Bug
+
 1. Download Prism Launcher
+
 2. Log into Prism Launcher
+
 3. Modify Minecraft version to be 21.0.0
+
 4. Download Modpack Wyntill
 
-#### Setting up environment
-1. Download Wynntils 
+  
 
+#### Setting up environment
+
+1. Download Wynntils
+2. Download Java
+3. Fork git
+4. Clone git in own VSCode
+  
 
 ### Steps to Reproduce
 
+  
+
 1. [Step 1]
-
-
-2. [Step 2]
-
+- Play Minecraft
+- Go into Server WynnCraft
+- Go to any `Mount Feeder` 
+- Press `I` to bring up `Wynntils User Profile`
+- Click on `Settings`
+- Go to `Inventory` and Click on Hover `Item Lock`
+- Enable `Block All Actions on Locked Items`
+- Lock the slot where your horse feed is. 
+- Now go to a Horse Feeder Station in a Stable
 
 3. [Observed result]
+- You are unable to feed Horse, or click on the saddle because of the `Block All Actions on Locked Items`
+  
 
 ### Reproduction Evidence
 
 - **Commit showing reproduction:** [Link to commit in your fork]
-- **Screenshots/logs:** [If applicable]
-- **My findings:** [What you discovered during reproduction]
+N/A, this is a gameplay bug to reproduce. 
 
+- **Screenshots/logs:** [If applicable]
+![[Screenshot 2026-06-16 at 1.23.35 PM.png]]
+![[Screenshot 2026-06-16 at 1.23.53 PM.png]]
+
+
+- **My findings:** [What you discovered during reproduction]
+You are unable to place your item into the feeder because it is Item Locked. 
+  
 ---
 
 ## Solution Approach
