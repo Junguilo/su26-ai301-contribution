@@ -4,7 +4,7 @@
 **Contribution Number:** [1]  
 **Student:** [June Eguilos]  
 **Issue:** [[GitHub issue link](https://github.com/Wynntils/Wynntils/issues/3860)]  
-**Status:** [Phase II] [Complete]
+**Status:** [Phase III] [Complete]
 
 ---
 
@@ -51,6 +51,7 @@ When an item is locked, you just aren't able to interact with specific progressi
   
 
 #### Setting up environment
+Having to download Minecraft and Java in order to work with the modpack. 
 
 1. Download Wynntils
 2. Download Java
@@ -95,61 +96,74 @@ You are unable to place your item into the feeder because it is Item Locked.
 
 ## Solution Approach
 
-
+The file that I have to modify is `ItemLockFeature`. I initially planned on just adding a boolean check, but discovered that Wynntils identifies which Wynncraft GUI is open through a `Container` system, so I needed to create a new container class to represent the Mount Feeder before I could reference it in `ItemLockFeature`.
 
 ### Analysis
 
-[Your analysis of the root cause - what's causing the issue?]
+The root cause is that `ItemLockFeature.onInventoryClickEvent` blocks clicks on any locked slot whenever "Block All Actions on Locked Items" is enabled, with no exception for the Mount Feeder. The feature already had exceptions carved out for two other cases (Emerald Pouch and Multi Health Potions), but the Mount Feeder wasn't one of them, so locked materials placed in the feeder (mount food, profession materials) couldn't be interacted with at all.
+
+A secondary issue I discovered while reproducing the bug: the Mount Feeder's title isn't a normal text string. Wynncraft renders it using a custom font glyph in the Unicode private-use area (`\uDAFF\uDFED\uE058`) instead of literal "Mount Feeder" text, so simple string/regex matching on visible text wouldn't work. I had to find the actual underlying glyph sequence by logging the raw title.
 
 ### Proposed Solution
 
-[High-level description of your fix approach]
+Add a new `MountFeederContainer` class so Wynntils can recognize when the player has the Mount Feeder open, then add an early-return check in `ItemLockFeature.onInventoryClickEvent` that skips the lock-blocking logic entirely when the current container is the Mount Feeder. Matching the existing pattern already used for fullscreen containers, Emerald Pouch, and Multi Health Potions.
 
 ### Implementation Plan
 
 Using UMPIRE framework (adapted):
 
-**Understand:** [Restate the problem]
+**Understand:** Locked items (mount food, profession materials) cannot be clicked or moved while inside the Mount Feeder GUI when "Block All Actions on Locked Items" is enabled, even though this interaction should always be allowed.
 
-**Match:** [What similar patterns/solutions exist in the codebase?]
+**Match:** `ItemLockFeature.java` already has two existing exceptions to the lock-blocking behavior (Emerald Pouch, Multi Health Potions), both implemented as early-return checks near the top of `onInventoryClickEvent`. The `ContainerModel` registry pattern (used by ~60 other container classes like `EmeraldPouchContainer`, `IngredientPouchContainer`) is how Wynntils identifies which Wynncraft GUI is currently open, via regex matching on the container title.
 
-**Plan:** [Step-by-step implementation plan]
-1. [Modify file X to do Y]
-2. [Add function Z]
-3. [Update tests]
+**Plan:**
+1. Create `MountFeederContainer.java` extending `Container`, matching on the Mount Feeder's title pattern
+2. Register the new container in `ContainerModel.registerContainers()`
+3. Add an early-return check in `ItemLockFeature.onInventoryClickEvent` for `MountFeederContainer`
+4. Test in-game to confirm locked items become clickable inside the feeder, and remain blocked elsewhere
 
-**Implement:** [Link to your branch/commits as you work]
+**Implement:** 
 
-**Review:** [Self-review checklist - does it follow the project's contribution guidelines?]
+**Review:** Fix is scoped narrowly to the Mount Feeder only, follows the existing code pattern for exceptions in `ItemLockFeature`, no new config options added since this should always be allowed (not toggleable), follows the project's alphabetical container registration convention
 
-**Evaluate:** [How will you verify it works?]
+**Evaluate:** Verified manually ingame on the Wynncraft server: enabled "Block All Actions on Locked Items," locked a slot containing horse feed, opened the Mount Feeder, and confirmed I could now click/place the item. Re-tested in normal inventory afterward to confirm locked items are still blocked everywhere else.
 
 ---
-
 ## Testing Strategy
 
 ### Unit Tests
 
-- [ ] Test case 1: [Description]
-- [ ] Test case 2: [Description]
-- [ ] Test case 3: [Description]
+- [ ] N/A 
+    — this fix is GUI/event-interaction based and was validated through manual in-game testing rather than unit tests, consistent with how the existing `ItemLockFeature` exceptions (Emerald Pouch, Multi Health Potions) are handled in the codebase
 
 ### Integration Tests
 
-- [ ] Integration scenario 1
-- [ ] Integration scenario 2
+- [ ] N/A 
+    — no existing integration test harness for container/click event interactions in this codebase
 
 ### Manual Testing
 
-[What you tested manually and results]
+Tested directly on the Wynncraft server using a custom-built Fabric jar loaded via Prism Launcher:
+1. Enabled "Block All Actions on Locked Items" in Wynntils settings
+2. Used the Item Lock keybind to lock an inventory slot containing horse feed
+3. Opened the Mount Feeder. Confirmed the item could now be clicked and placed into the feeder (previously blocked)
+4. Closed the Mount Feeder and confirmed the same locked item was still correctly blocked from being clicked/dropped in my regular inventory, verifying the fix is properly scoped to only the Mount Feeder
 
 ---
 
 ## Implementation Notes
 
-### Week [X] Progress
+### Week [3] Progress
 
 [What you built this week, challenges faced, decisions made]
+- Reproduced the bug in-game by enabling "Block All Actions on Locked Items" and locking a slot containing horse feed
+- Investigated the `ItemLockFeature` and `ContainerModel`/`Container` systems to understand how Wynntils identifies open GUIs
+- Discovered the Mount Feeder's title is rendered as a custom font glyph rather than literal text, requiring me to log the raw title characters to find the correct match pattern
+- Created `MountFeederContainer.java`
+- Registered it in `ContainerModel.java`
+- Added the exception check in `ItemLockFeature.java`
+- Verified the fix works in-game
+- Created PR
 
 ### Week [Y] Progress
 
@@ -157,9 +171,12 @@ Using UMPIRE framework (adapted):
 
 ### Code Changes
 
-- **Files modified:** [List]
-- **Key commits:** [Links to important commits]
-- **Approach decisions:** [Why you chose certain approaches]
+- **Files modified:**
+    - `ContainerModel.java` — registered `MountFeederContainer`
+    - `ItemLockFeature.java` — added early return for `MountFeederContainer` in `onInventoryClickEvent`
+    - `MountFeederContainer.java` — new file, identifies the Mount Feeder screen
+- **Key commits:** [links]
+- **Approach decisions:** I matched the existing exception pattern already used for Emerald Pouch and Multi Health Potions rather than introducing a new config toggle, since the issue asked for this to always be allowed rather than be optional. I also followed the codebase's existing convention (seen in `CharacterSelectionContainer` and `ContentBookContainer`) for matching custom-font GUI titles via their private use area Unicode code points, rather than using a wildcard regex, to stay consistent with how similar containers are implemented.
 
 ---
 
