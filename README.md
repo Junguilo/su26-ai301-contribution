@@ -133,12 +133,12 @@ Using UMPIRE framework (adapted):
 
 ### Unit Tests
 
-- [ ] N/A 
+- [ ] N/A
     — this fix is GUI/event-interaction based and was validated through manual in-game testing rather than unit tests, consistent with how the existing `ItemLockFeature` exceptions (Emerald Pouch, Multi Health Potions) are handled in the codebase
 
 ### Integration Tests
 
-- [ ] N/A 
+- [ ] ./gradlew spotlessApply
     — no existing integration test harness for container/click event interactions in this codebase
 
 ### Manual Testing
@@ -182,31 +182,50 @@ Tested directly on the Wynncraft server using a custom-built Fabric jar loaded v
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when submitted]
+**PR Link:** [[GitHub PR](https://github.com/Wynntils/Wynntils/pull/4165)]  
 
 **PR Description:** [Draft or final PR description - much of the content above can be adapted]
 
-**Maintainer Feedback:**
-- [Date]: [Summary of feedback received]
-- [Date]: [How you addressed it]
+The Block all Actions on Locked Items setting from Item Lock prevented players from feeding or clicking horse saddles if the item slot was locked. Added MountFeederContainer and excluded it from the item lock check in ItemLockFeature.
 
-**Status:** [Awaiting review / Iterating / Approved / Merged]
+Closes `#3860`
+
+**Maintainer Feedback:**
+- [6/23/2026]: [Summary of feedback received]
+
+Asked if I accidentally disabled `Allow Edits By Maintainers` and asked if I can make a small tweak. 
+
+- [6/24/2026]: [How you addressed it]
+
+There was a step that I missed which was to `./gradlew spotlessApply` I completely forgot and understood that I had some coding style errors that didn't match with the project. I just fixed the error, made sure I did `./gradlew spotlessApply` again and pushed it. 
+
+
+**Status:** [Merged]
 
 ---
 
 ## Learnings & Reflections
 
+I learned a lot on testing, especially reading through large projects.
+
 ### Technical Skills Gained
 
 [What you learned technically]
 
+Learned how open source contribution workflows work. I learned how to fork, rebase, test, and PRs.
+I learned how to read through big projects and work with just the files that I needed in a big project. It becomes overwhelming sifting through each file and reading and seeing how things work, to just only focusing on the few files that you need. 
+
 ### Challenges Overcome
 
 [What was hard and how you solved it]
+It was my first time doing a PR and I think I accidentally clicked "Allow Maintainers to Edit Code" and the maintainers couldn't fix one line that I made because of what I accidentally clicked on. 
+I think also trying to find the files in a big project was really overwhelming, I was able to keep a lot of tabs and try to track down the issue and take notes for those specific tabs. 
 
 ### What I'd Do Differently Next Time
 
 [Reflection on your process]
+Make sure I try to read the contributing md once I end coding to make sure I get everything correctly. 
+Try to follow their coding style guidelines. 
 
 ---
 
