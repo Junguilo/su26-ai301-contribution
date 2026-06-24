@@ -4,7 +4,7 @@
 **Contribution Number:** [1]  
 **Student:** [June Eguilos]  
 **Issue:** [[GitHub issue link](https://github.com/Wynntils/Wynntils/issues/3860)]  
-**Status:** [Phase III] [Complete]
+**Status:** [Phase IV] [Complete]
 
 ---
 
